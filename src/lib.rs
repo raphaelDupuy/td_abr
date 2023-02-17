@@ -22,7 +22,7 @@ impl<T: Ord> Tree<T> {
     /// Returns a tree containing a single value
     fn leaf(value: T) -> Self {
         Tree(Some(Box::new(Node {
-            value: value,
+            value,
             left: Tree(None),
             right: Tree(None),
         })))
@@ -94,5 +94,53 @@ mod tests {
     fn should_build_a_single_node() {
         let twelve_as_root = Tree::leaf(12);
         assert_eq!(twelve_as_root.0.unwrap().value, 12);
+    }
+
+    fn setup_a_tree() -> Tree<i32> {
+        Tree(Some(Box::new(Node {
+            value: 17,
+            left: Tree(Some(Box::new(Node {
+                value: 8,
+                left: Tree(Some(Box::new(Node {
+                    value: 3,
+                    left: Tree(None),
+                    right: Tree(None),
+                }))),
+                right: Tree(None),
+            }))),
+            right: Tree(Some(Box::new(Node {
+                value: 27,
+                left: Tree(Some(Box::new(Node {
+                    value: 22,
+                    left: Tree(None),
+                    right: Tree(None),
+                }))),
+                right: Tree(Some(Box::new(Node {
+                    value: 55,
+                    left: Tree(None),
+                    right: Tree(Some(Box::new(Node {
+                        value: 83,
+                        left: Tree(None),
+                        right: Tree(None),
+                    }))),
+                }))),
+            }))),
+        })))
+    }
+
+    #[test]
+    fn should_contains_a_value() {
+        let t = setup_a_tree();
+        assert!(t.contains(3));
+        assert!(t.contains(55));
+        assert!(!t.contains(120));
+    }
+
+    #[test]
+    fn should_insert_a_new_node() {
+        let mut t = setup_a_tree();
+        assert!(!t.contains(33));
+        t.insert(33);
+        assert!(t.contains(33));
     }
 }
