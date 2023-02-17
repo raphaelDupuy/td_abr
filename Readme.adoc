@@ -103,7 +103,7 @@ pub struct Node {
 ----
 
 Les macros `#[derive(Debug)]` permettent d'obtenir des routines d'affichage
-pour le debug automatiquement. En les utilisants il est possible d'afficher un objet arbre avec la syntaxe `println!("{:#?}", mon_arbre)`.
+pour le debug automatiquement. En les utilisant il est possible d'afficher un objet arbre avec la syntaxe `println!("{:#?}", mon_arbre)`.
 
 Pour représenter un arbre composé d'un unique nœud racine avec la valeur 12 nous
 écririons,
