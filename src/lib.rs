@@ -36,7 +36,14 @@ impl<T: Ord> Tree<T> {
 
     /// Returns true if and only if `value` belongs to the tree.
     pub fn contains(&self, value: T) -> bool {
-        panic!("Not implemented")
+        match &self.0 {
+            Some(n) => match value.cmp(&n.value) {
+                std::cmp::Ordering::Less => n.left.contains(value),
+                std::cmp::Ordering::Equal => true,
+                std::cmp::Ordering::Greater => n.right.contains(value),
+            },
+            None => false,
+        }
     }
 
     /// Deletes `value` from the tree.
