@@ -31,7 +31,17 @@ impl<T: Ord> Tree<T> {
     /// Inserts `value` into the tree.
     /// Returns `false` iff the `value` was already contained in the tree.
     pub fn insert(&mut self, value: T) -> bool {
-        panic!("Not implemented")
+        match &mut self.0 {
+            Some(ref mut n) => match value.cmp(&n.value) {
+                std::cmp::Ordering::Less => n.left.insert(value),
+                std::cmp::Ordering::Equal => false,
+                std::cmp::Ordering::Greater => n.right.insert(value),
+            },
+            None => {
+                *self = Self::leaf(value);
+                true
+            }
+        }
     }
 
     /// Returns true if and only if `value` belongs to the tree.
