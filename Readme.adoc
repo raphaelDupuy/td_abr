@@ -73,7 +73,7 @@ pub struct Node {
 
 Ce nouveau code compile ! Malheureusement il ne nous permet pas de représenter des arbres vides. Cela est indispensable, en effet les feuilles de l'arbre possèdent des sous-arbre gauche et droit vides.
 
-Dans un langage comme C ou C++, nous pourrions utiliser un pointeur nul pour représenter le cas de l'arbre vide. Néanmoins dans Rust les références nulles sont interdites pour éviter des erreurs à l'exécution. À la place Rust préconise l'utilisation d'un type https://doc.rust-lang.org/std/option/index.html[`Option<>`] qui représente une valeur optionelle.
+Dans un langage comme C ou C++, nous pourrions utiliser un pointeur nul pour représenter le cas de l'arbre vide. Néanmoins dans Rust les références nulles sont interdites pour éviter des erreurs à l'exécution. À la place Rust préconise l'utilisation d'un type https://doc.rust-lang.org/std/option/index.html[`Option<>`] qui représente une valeur optionnelle.
 
 Notre structure devient donc 
 
@@ -87,7 +87,7 @@ pub struct Node {
 ----
 
 et de manière à permettre de manipuler un arbre vide directement, nous allons la
-réecrire de la manière suivante,
+réécrire de la manière suivante,
 
 [source,rust]
 ----
@@ -135,13 +135,13 @@ Comme nous venons de le voir, il est pour l'instant fastidieux de manipuler nos 
 
 === Implémentation de contains et insert 
 
-Pour tester si une valeur appartient à l'ABR il suffit de parcourir l'arbre en partant de la racine. Pour chaque nœud l'on compare la valeur cherchée à la valeur courante. Si elle sont identiques alors nous retournons `true`. Si ce n'est pas le cas nous recursivons soit sur l'arbre gauche lorsque la valeur est inférieure ou l'arbre droit lorsque la valeur est supérieure.
+Pour tester si une valeur appartient à l'ABR il suffit de parcourir l'arbre en partant de la racine. Pour chaque nœud l'on compare la valeur cherchée à la valeur courante. Si elle sont identiques alors nous retournons `true`. Si ce n'est pas le cas nous récursivons soit sur l'arbre gauche lorsque la valeur est inférieure ou l'arbre droit lorsque la valeur est supérieure.
 
 . Implémentez dans `Tree` la méthode `pub fn contains(&self, value: i32) -> bool` qui retourne vrai si et seulement si `value` est présente dans un des nœuds de l'arbre.
 
 Pour rajouter une nouvelle valeur à l'ABR on utilise une méthode similaire. Nous parcourons l'arbre:
     - si la racine est vide, nous le remplaçons par une feuille avec la nouvelle valeur;
-    - si la racine est pleine, nous vérifions que la valeur n'est pas déjà présente (en effet il n'y a pas de doublons dans un ABR) puis nous recursivons sur le sous-arbre gauche ou le sous-arbre droit de manière à préserver l'invariant d'ordre.
+    - si la racine est pleine, nous vérifions que la valeur n'est pas déjà présente (en effet il n'y a pas de doublons dans un ABR) puis nous récursivons sur le sous-arbre gauche ou le sous-arbre droit de manière à préserver l'invariant d'ordre.
 
 [start=2]
 . Implémentez la méthode `pub fn insert(&mut self, value: i32) -> bool` qui insère `value` dans l'ABR. La méthode retourne `true` lorsque l'insertion est possible et `false` lorsque la valeur est déjà présente dans l'arbre.
@@ -150,9 +150,9 @@ Pour rajouter une nouvelle valeur à l'ABR on utilise une méthode similaire. No
 
 === Implémentation de delete
 
-La supression d'une valeur est un peu plus compliquée. Une méthode de supression efficace est expliquée sur https://fr.wikipedia.org/wiki/Arbre_binaire_de_recherche#Suppression[l'article français de Wikipedia].
+La supression d'une valeur est un peu plus compliquée. Une méthode de suppression efficace est expliquée sur https://fr.wikipedia.org/wiki/Arbre_binaire_de_recherche#Suppression[l'article français de Wikipedia].
 
-. Implémentez la méthode `pub fn delete(&mut self, value: i32)` en suivant l'algorithme précédent. La méthode retourne `true` lorsque la supression est possible et retourne `false` lorsque la valeur n'est pas trouvée dans l'ABR.
+. Implémentez la méthode `pub fn delete(&mut self, value: i32)` en suivant l'algorithme précédent. La méthode retourne `true` lorsque la suppression est possible et retourne `false` lorsque la valeur n'est pas trouvée dans l'ABR.
 
 
 === Pour aller plus loin...
@@ -160,7 +160,7 @@ La supression d'une valeur est un peu plus compliquée. Une méthode de supressi
 . Pour l'instant notre ABR utilise des entiers signés 32 bits (`i32`); néanmoins il est facile en utilisant un https://doc.rust-lang.org/book/ch10-01-syntax.html[type générique] de l'étendre à tout type possédant un ordre total.
 Pour spécifier que votre type générique possède un ordre total vous pouvez utiliser le trait `Ord`.
 
-. Plutôt que de retourner un booleen pour vérifier que les opérations `insert` et `delete` se sont bien déroulées il est aussi possible de retourner une erreur à l'aide d'un objet de type `Result<>`. Cela vous permettra d'explorer un autre mécanisme de gestion d'erreurs dans Rust. 
+. Plutôt que de retourner un booléen pour vérifier que les opérations `insert` et `delete` se sont bien déroulées il est aussi possible de retourner une erreur à l'aide d'un objet de type `Result<>`. Cela vous permettra d'explorer un autre mécanisme de gestion d'erreurs dans Rust. 
 
 ==== Crédits
 
@@ -168,4 +168,4 @@ Pour spécifier que votre type générique possède un ordre total vous pouvez u
 
 * TP similaire dans le cours CIS198 de U. Pennsylvania, https://github.com/cis198-2016s/homework/tree/master/hw02
 
-* Learn Rust with entirely too many linked lists, https://rust-unofficial.github.io/too-many-lists/. Un excellent tutoriel qui montre pas à pas comment implémenter des listes chaînées dans Rust et les problèmes que l'on peut recontrer.
+* Learn Rust with entirely too many linked lists, https://rust-unofficial.github.io/too-many-lists/. Un excellent tutoriel qui montre pas à pas comment implémenter des listes chaînées dans Rust et les problèmes que l'on peut rencontrer.

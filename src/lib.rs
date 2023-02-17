@@ -57,9 +57,54 @@ impl<T: Ord> Tree<T> {
     }
 
     /// Deletes `value` from the tree.
-    /// When the value is not found the tree, `false` is returned.
-    pub fn delete(&mut self, value: T) {
-        panic!("Not implemented");
+    /// When the value is not found in the tree, `false` is returned.
+    pub fn delete(&mut self, value: T) -> bool {
+        if let Some(mut f) = self.find(value) {
+            if let Some(n) = &mut f.0 {
+                match (&n.left.0, &n.right.0) {
+                    (None, None) => f.0 = None,
+                    (Some(_), None) => f.0 = n.left.0.take(),
+                    (None, Some(_)) => f.0 = n.right.0.take(),
+                    (Some(_), Some(_)) => {
+                        n.value = n.right.pop_min().unwrap();
+                    }
+                }
+            }
+        } else {
+            return false;
+        }
+        true
+    }
+
+    /// Returns a mutable reference to the sub-tree whose root is `value`.
+    /// When the value is not found returns `Err(ValueNotFound)`.
+    fn find(&mut self, value: T) -> Option<&mut Self> {
+        match self.0 {
+            //TODO pas très élégant : devrait être intégré au match suivant mais...
+            Some(ref n) if value == n.value => Some(self),
+            Some(ref mut n) => match value.cmp(&n.value) {
+                std::cmp::Ordering::Less => n.left.find(value),
+                std::cmp::Ordering::Equal => unreachable!(),
+                std::cmp::Ordering::Greater => n.right.find(value),
+            },
+            None => None,
+        }
+    }
+
+    /// Removes the lowest value from the tree and returns it.
+    /// If the tree is empty, `None` is returned.
+    pub fn pop_min(&mut self) -> Option<T> {
+        match &mut self.0 {
+            Some(ref mut n) => match n.left.0 {
+                None => {
+                    let temp = self.0.take().unwrap();
+                    *self = temp.right;
+                    Some(temp.value)
+                }
+                Some(_) => n.left.pop_min(),
+            },
+            None => None,
+        }
     }
 }
 
@@ -159,5 +204,13 @@ mod tests {
         assert!(!t.contains(33));
         t.insert(33);
         assert!(t.contains(33));
+    }
+
+    #[test]
+    fn should_delete_a_node() {
+        let mut t = setup_a_tree();
+        assert!(t.contains(55));
+        t.delete(55);
+        assert!(!t.contains(55));
     }
 }
