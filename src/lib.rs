@@ -16,12 +16,16 @@ struct Node<T: Ord> {
 impl<T: Ord> Tree<T> {
     /// Returns an empty tree
     pub fn new() -> Self {
-        panic!("Not implemented")
+        Tree(None)
     }
 
     /// Returns a tree containing a single value
     fn leaf(value: T) -> Self {
-        panic!("Not implemented")
+        Tree(Some(Box::new(Node {
+            value: value,
+            left: Tree(None),
+            right: Tree(None),
+        })))
     }
 
     /// Inserts `value` into the tree.
@@ -78,5 +82,17 @@ mod tests {
         assert_eq!(root.value, 12);
         assert_eq!(root.left.0.unwrap().value, 8);
         assert_eq!(root.right.0.unwrap().value, 27);
+    }
+
+    #[test]
+    fn should_build_an_empty_tree() {
+        let empty_tree = Tree::<i32>::new();
+        assert!(empty_tree.0.is_none());
+    }
+
+    #[test]
+    fn should_build_a_single_node() {
+        let twelve_as_root = Tree::leaf(12);
+        assert_eq!(twelve_as_root.0.unwrap().value, 12);
     }
 }
