@@ -16,12 +16,20 @@ struct Node {
 impl Tree {
     /// Returns an empty tree
     pub fn new() -> Self {
-        panic!("Not implemented")
+        Tree(Some(Box::new(Node {
+                                value: 0,
+                                left: Tree(None),
+                                right: Tree(None),
+                            })))
     }
 
     /// Returns a tree containing a single value
     fn leaf(value: i32) -> Self {
-        panic!("Not implemented")
+        Tree(Some(Box::new(Node {
+                                value: value,
+                                left: Tree(None),
+                                right: Tree(None),
+                            })))
     }
 
     /// Inserts `value` into the tree.
@@ -40,4 +48,10 @@ impl Tree {
     pub fn delete(&mut self, value: i32) {
         panic!("Not implemented");
     }
+}
+
+fn main () {
+    let t: Tree = Tree::leaf(16);
+
+    println!("{:#?}", t);
 }
